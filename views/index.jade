@@ -1,26 +1,40 @@
 extends layout
 
 block content
-  h1 HTML5 Spatial Frequency Filtering using 2D-FFT
-  div
-    img(src="images/motobecane.jpg" width="256" height="256")
-    canvas(width="256" height="256")#Spectrum
-    canvas(width="256" height="256")#Result
-  div#Filter
-    input(type="radio" name="filter" value="HPF" checked="checked")#HPF
-    label(for="HPF") Highpass
-    input(type="radio" name="filter" value="LPF")#LPF
-    label(for="LPF") LowPass
-  label Filter radius
-  div#Slider
-  div#viewType Logarithmic display
-    label on
-    input(type="radio" name="view" value="0" checked="checked")
-    label off
-    input(type="radio" name="view" value="1")
+  h1.page-header Parties analytiques
+  div.row
+    div.col-md-4
+      div
+        img(src="images/motobecane.jpg" width="256" height="256")
+    div.col-md-4
+        canvas(width="256" height="256")#Spectrum
+    div.col-md-4
+        canvas(width="256" height="256")#Result
 
-
-  div#Slider
+  div.row
+    div.col-md-4
+      div.panel.panel-default
+        div.panel-heading Filter type
+        div.panel-body#Filter
+          input(type="radio" name="filter" value="HPF" checked="checked")#HPF
+          label(for="HPF") Highpass
+          input(type="radio" name="filter" value="LPF")#LPF
+          label(for="LPF") LowPass
+    div.col-md-4
+      div.panel.panel-default
+        div.panel-heading Filter radius
+        div.panel-body
+          div#Slider          
+    div.col-md-4
+      div.panel.panel-default
+        div.panel-heading Log display
+        div.panel-body
+          div.radio
+            label on
+              input(type="radio" name="view" value="0" checked="checked")
+          div.radio
+            label off
+              input(type="radio" name="view" value="1")
 
 
 
