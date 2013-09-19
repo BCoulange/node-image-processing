@@ -7,6 +7,8 @@ $ ->
   spectrum.fillRect(0, 0, spectrum.canvas.width, spectrum.canvas.height);
   result.fillStyle = '#ffffff';
   result.fillRect(0, 0, result.canvas.width, result.canvas.height);
+  last_filter = $('input[name=filter]:checked').val()
+  opts_last_filter = {}
 
   # set interaction
   $('#Slider').slider
@@ -36,9 +38,11 @@ $ ->
 
     $('#Filter').change (e) ->  apply(e.target.value)
     $('#Slider').slider
-      change: (e, ui) -> apply($('input[name=filter]:checked').val())
+      change: (e, ui) -> apply last_filter, opts_last_filter
 
-   
+    $('input').change ->
+      apply last_filter, opts_last_filter
+
     apply = (type,opts = {}) ->
       try
         spectrum.drawImage(image, 0, 0)
@@ -135,10 +139,13 @@ $ ->
         $("#xposition").html(x_pos)
         $("#yposition").html(y_pos)
 
-        apply 'APF',
+        last_filter = 'APF'
+        opts_last_filter = 
           center:
             x: x_pos
             y: y_pos
+        apply 'APF', opts_last_filter
+
         
 
   , false
