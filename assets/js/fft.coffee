@@ -39,7 +39,7 @@ $ ->
       change: (e, ui) -> apply($('input[name=filter]:checked').val())
 
    
-    apply = (type) ->
+    apply = (type,opts = {}) ->
       try
         spectrum.drawImage(image, 0, 0)
     
@@ -60,13 +60,14 @@ $ ->
         # swap quadrant
         FrequencyFilter.swap(re, im);  
 
-        if type == 'HPF'    
+        switch type     
           # High Pass Filter     
-          FrequencyFilter.HPF(re, im, radius);  
-        else
+          when 'HPF' then FrequencyFilter.HPF(re, im, radius)  
           # Low Pass Filter
-          FrequencyFilter.LPF(re, im, radius);  
-
+          when 'LPF' then FrequencyFilter.LPF(re, im, radius) 
+          # Analytic Part Filtering
+          when 'APF' then FrequencyFilter.APF(re,im,opts.center, radius)
+     
         # # Band Path Filter
         # FrequencyFilter.BPF(re, im, radius, radius/2);  
 
@@ -99,6 +100,26 @@ $ ->
         f64 = new Float64Array(1)
       catch e
         console.log(e);
+
+    $("#Spectrum").on 'click', (e) ->
+        p = $(this).offset()
+        x_pos = e.pageX-p.left-$(this).width()/2
+        y_pos = e.pageY-p.top-$(this).height()/2
+        $("#xposition").html(x_pos)
+        $("#yposition").html(y_pos)
+
+        apply 'APF',
+          center:
+            x: x_pos
+            y: y_pos
         
 
   , false
+
+
+
+
+
+
+
+
