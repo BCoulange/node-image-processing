@@ -1,5 +1,28 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 HTML5 Spatial Frequency Filtering using 2D-FFT
+  div
+    img(src="images/motobecane.jpg" width="256" height="256")
+    canvas(width="256" height="256")#Spectrum
+    canvas(width="256" height="256")#Result
+  div#Filter
+    input(type="radio" name="filter" value="HPF" checked="checked")#HPF
+    label(for="HPF") Highpass
+    input(type="radio" name="filter" value="LPF")#LPF
+    label(for="LPF") LowPass
+  label Filter radius
+  div#Slider
+  div#viewType Logarithmic display
+    label on
+    input(type="radio" name="view" value="0" checked="checked")
+    label off
+    input(type="radio" name="view" value="1")
+
+
+  div#Slider
+
+
+
+//<script src="lib/js/fft.js"></script>
+//<script src="lib/js/fft-client.js"></script>
