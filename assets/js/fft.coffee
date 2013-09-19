@@ -46,7 +46,7 @@ $ ->
         src = spectrum.getImageData(0, 0, w, h)
         data = src.data
         radius = $('#Slider').slider('option', 'value')
-        viewtype = $('input[name=view]:checked').val()
+
         
         for y in [0...h]
           i = y*w
@@ -72,7 +72,7 @@ $ ->
         # FrequencyFilter.BPF(re, im, radius, radius/2);  
 
         # render spectrum
-        if viewtype == "0"
+        if $('#view-type').is(':checked')
           SpectrumViewer.render re, im, true  
         else
           SpectrumViewer.render re, im, false
@@ -82,12 +82,31 @@ $ ->
 
         # 2D-IFFT
         FFT.ifft2d(re, im)
-        for y in [0...h]
-          i = y*w
-          for x in [0...w]
-            val = re[i + x];
-            p = (i << 2) + (x << 2);
-            data[p] = data[p + 1] = data[p + 2] = val  
+
+        if $('#normalize-filtered').is(':checked')
+        # normalisation si desiré
+          max = re[0]
+          min = re[0]
+          for y in [0...h]
+            i = y*w
+            for x in [0...w]
+              val = re[i + x]
+              max = val if val > max
+              min = val if val < min
+
+          for y in [0...h]
+            i = y*w
+            for x in [0...w]
+              val = re[i + x];
+              p = (i << 2) + (x << 2);
+              data[p] = data[p + 1] = data[p + 2] = (val-min)/(max-min)*255  
+        else
+          for y in [0...h]
+            i = y*w
+            for x in [0...w]
+              val = re[i + x];
+              p = (i << 2) + (x << 2);
+              data[p] = data[p + 1] = data[p + 2] = val  
 
         # put result image on the canvas
         result.putImageData(src, 0, 0);

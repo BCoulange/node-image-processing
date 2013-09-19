@@ -29,12 +29,21 @@ block content
       div.panel.panel-default
         div.panel-heading Log display
         div.panel-body
-          div.radio
-            label on
-              input(type="radio" name="view" value="0" checked="checked")
-          div.radio
-            label off
-              input(type="radio" name="view" value="1")
+          div.well Log dispay
+            div.radio
+              label on
+                input(type="radio" name="view" value="0" checked="checked")
+            div.radio
+              label off
+                input(type="radio" name="view" value="1")
+          div.well Options
+            div.checkbox
+              label Normaliser l'image filtree
+                input#normalize-filtered(type="checkbox" value="" checked="checked") 
+            div.checkbox
+              label Log dispay
+                input#view-type(type="checkbox" name="view" value="" checked="checked") 
+
     div.col-md-4
       div.panel.panel-default
         div.panel-heading Infos
