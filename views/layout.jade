@@ -17,5 +17,10 @@ html
       nav.navbar.navbar-default(role="navigation")
         div.navbar-header
           a.navbar-brand Node Image Processing
+        form.navbar-form.navbar-left#load-image-form
+          div.form-group
+            input(type="text" placeholder="Image url").form-control
+          button(type="submit").btn.btn-default Load
+
       block content
     != js('fft') 
