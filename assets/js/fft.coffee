@@ -24,6 +24,8 @@ $ ->
     image.addEventListener 'load', (e) ->
       w = image.width
       h = image.height # w == h
+      w = 256
+      h = 256
       re = []
       im = []  
 
@@ -160,6 +162,9 @@ $ ->
     image = new Image()  
     image.src = $(this).find('input').val()
     $('#Original')[0].src = image.src
+
+
+    
     init_image image
     
 
