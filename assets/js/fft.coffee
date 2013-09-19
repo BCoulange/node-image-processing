@@ -83,6 +83,14 @@ $ ->
         # 2D-IFFT
         FFT.ifft2d(re, im)
 
+        switch $('input[name=filtered-view]:checked').val()
+          # when "real-part" # nothing to do
+          when "modulus-part"
+            for y in [0...h]
+              i = y*w
+              for x in [0...w]
+                re[i+x] = Math.sqrt(re[i+x]*re[i+x]+im[i+x]*im[i+x])
+
         if $('#normalize-filtered').is(':checked')
         # normalisation si desiré
           max = re[0]
