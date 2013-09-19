@@ -4,12 +4,43 @@ block content
   h1.page-header Parties analytiques
   div.row
     div.col-md-4
-      div
-        img(src="images/motobecane.jpg" width="256" height="256")#Original
+      
     div.col-md-4
-        canvas(width="256" height="256")#Spectrum
+
+  div.row
     div.col-md-4
-        canvas(width="256" height="256")#Result
+      div.panel.panel-default
+        div.panel-heading
+          div.panel.panel-default
+            div.panel-heading 
+              b#image-name motobecane.jpg
+            div.panel-body
+              img(src="images/motobecane.jpg" width="256" height="256")#Original
+        div.panel-body
+          div.well 
+            h4 Vue
+            label.radio-inline Re
+              input(type="radio" name="filtered-view" value="real-part" checked="checked")
+            label.radio-inline Mod
+              input(type="radio" name="filtered-view" value="modulus-part")
+            h4 fond Original (spectre et image)
+            div#background-Slider
+
+          div.well Options
+            div.checkbox
+              label Normaliser l'image filtree
+                input#normalize-filtered(type="checkbox" value="" checked="checked") 
+            div.checkbox
+              label Log dispay
+                input#view-type(type="checkbox" name="view" value="" checked="checked") 
+    div.col-md-4
+      h2 Fourier transform
+      canvas(width="256" height="256")#Spectrum
+    div.col-md-4
+      h2 Result
+      canvas(width="256" height="256")#Result
+
+
 
   div.row
     div.col-md-4
@@ -24,33 +55,21 @@ block content
       div.panel.panel-default
         div.panel-heading Filter radius
         div.panel-body
-          div#Slider          
-    div.col-md-4
-      div.panel.panel-default
-        div.panel-heading Options
-        div.panel-body
-          div.well 
-            p Vue
-            label.radio-inline Re
-              input(type="radio" name="filtered-view" value="real-part" checked="checked")
-            label.radio-inline Mod
-              input(type="radio" name="filtered-view" value="modulus-part")
+          div#radius-Slider          
 
-          div.well Options
-            div.checkbox
-              label Normaliser l'image filtree
-                input#normalize-filtered(type="checkbox" value="" checked="checked") 
-            div.checkbox
-              label Log dispay
-                input#view-type(type="checkbox" name="view" value="" checked="checked") 
 
     div.col-md-4
       div.panel.panel-default
         div.panel-heading Infos
         div.panel-body
-          ul
+          p TF position
+          ul.list-inline
             li#xposition
             li#yposition
+          p Image position
+          ul.list-inline
+            li#im-xposition
+            li#im-yposition
 
 
 //<script src="lib/js/fft.js"></script>

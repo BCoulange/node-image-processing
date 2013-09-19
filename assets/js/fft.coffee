@@ -8,16 +8,24 @@ $ ->
   result.fillStyle = '#ffffff';
   result.fillRect(0, 0, result.canvas.width, result.canvas.height);
   last_filter = $('input[name=filter]:checked').val()
-  opts_last_filter = {}
+
+
 
   # set interaction
-  $('#Slider').slider
+  $('#radius-Slider').slider
     step: 1, 
     min: 0, 
     max: 128
+    value: 20
   $('#Filter').buttonset();
+  $('#background-Slider').slider
+    step: 1,
+    min: 0,
+    max: 100,
+    value: 10
 
-
+  opts_last_filter =
+    background_level: $('#background-Slider').slider('option', 'value')
 
   # Load image
   init_image = (image) ->
@@ -39,9 +47,12 @@ $ ->
 
 
       $('#Filter').change (e) ->  apply(e.target.value)
-      $('#Slider').slider
+      $('#radius-Slider').slider
         change: (e, ui) -> apply last_filter, opts_last_filter
-
+      $('#background-Slider').slider
+        change: (e, ui) -> 
+          opts_last_filter.background_level = $('#background-Slider').slider('option', 'value')
+          apply last_filter, opts_last_filter
       $('input').change ->
         apply last_filter, opts_last_filter
 
@@ -51,13 +62,17 @@ $ ->
     
           src = spectrum.getImageData(0, 0, w, h)
           data = src.data
-          radius = $('#Slider').slider('option', 'value')
+          radius = $('#radius-Slider').slider('option', 'value')
 
           
           for y in [0...h]
             i = y*w
             for x in [0...w]
-              re[i + x] = data[(i << 2) + (x << 2)]
+              if type == 'WFT'
+                dist = Math.sqrt((x-opts.center.x)*(x-opts.center.x)+(y-opts.center.y)*(y-opts.center.y))
+                if dist < radius then re[i + x] = data[(i << 2) + (x << 2)] else re[i + x] = 0
+              else
+                re[i + x] = data[(i << 2) + (x << 2)]
               im[i + x] = 0.0;  
 
           # 2D-FFT
@@ -65,6 +80,14 @@ $ ->
 
           # swap quadrant
           FrequencyFilter.swap(re, im);  
+
+          re_orig = []
+          im_orig = [] 
+          for y in [0...h]
+            i = y*w
+            for x in [0...w]
+              re_orig[i + x]   = re[i + x] 
+              im_orig[i + x]   = im[i + x]          
 
           switch type     
             # High Pass Filter     
@@ -76,6 +99,16 @@ $ ->
        
           # # Band Path Filter
           # FrequencyFilter.BPF(re, im, radius, radius/2);  
+
+          # # pas encore au point...
+          # if opts.background_level > 0 && type != 'WFT'
+          #   for y in [0...h]
+          #     i = y*w
+          #     for x in [0...w]
+          #       re_orig[i + x]   = re[i + x]*(100-opts.background_level)/100 +  (opts.background_level/100)*re_orig[i + x]
+          #       im_orig[i + x]   = im[i + x]*(100-opts.background_level)/100 +  (opts.background_level/100)*im_orig[i + x]   
+
+
 
           # render spectrum
           if $('#view-type').is(':checked')
@@ -96,6 +129,14 @@ $ ->
                 i = y*w
                 for x in [0...w]
                   re[i+x] = Math.sqrt(re[i+x]*re[i+x]+im[i+x]*im[i+x])
+
+
+          if opts.background_level > 0 
+            for y in [0...h]
+              i = y*w
+              for x in [0...w]
+                re_orig[i + x]   = data[(i << 2) + (x << 2)]
+
 
           if $('#normalize-filtered').is(':checked')
           # normalisation si desiré
@@ -122,6 +163,15 @@ $ ->
                 p = (i << 2) + (x << 2);
                 data[p] = data[p + 1] = data[p + 2] = val  
 
+          # ajout du background
+          if opts.background_level > 0 && type == 'WFT'
+            for y in [0...h]
+              i = y*w
+              for x in [0...w]
+                val = re[i + x] * (100-opts.background_level)/100 + opts.background_level/100*re_orig[i + x]
+                p = (i << 2) + (x << 2); 
+                data[p] = data[p + 1] = data[p + 2] = val
+
           # put result image on the canvas
           result.putImageData(src, 0, 0);
         catch e
@@ -142,11 +192,23 @@ $ ->
           $("#yposition").html(y_pos)
 
           last_filter = 'APF'
-          opts_last_filter = 
-            center:
-              x: x_pos
-              y: y_pos
+          opts_last_filter.center = 
+            x: x_pos
+            y: y_pos
           apply 'APF', opts_last_filter
+
+      $("#Result").on 'click', (e) ->
+          p = $(this).offset()
+          x_pos = e.pageX-p.left
+          y_pos = e.pageY-p.top
+          $("#im-xposition").html(x_pos)
+          $("#im-yposition").html(y_pos)
+
+          last_filter = 'WFT'
+          opts_last_filter.center=
+            x: x_pos
+            y: y_pos
+          apply 'WFT', opts_last_filter
 
       apply last_filter, opts_last_filter
 
@@ -162,6 +224,7 @@ $ ->
     image = new Image()  
     image.src = $(this).find('input').val()
     $('#Original')[0].src = image.src
+    $('#image-name').html image.src
 
 
     
