@@ -1,0 +1,20 @@
+{
+  "name": "fft-viewer",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "coffee app.coffee"
+  },
+  "dependencies": {
+    "express": "3.4.0",
+    "jade": "*",
+    "less-middleware": "*",
+    "connect-assets": "*",
+    "jade": "*",
+    "less": "*",
+    "less-middleware": "*",
+    "coffee-script": "~1.3.3",
+    "node-jquery": "*",
+    "jquery": "*"
+  }
+}
