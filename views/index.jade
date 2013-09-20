@@ -2,10 +2,6 @@ extends layout
 
 block content
   h1.page-header Parties analytiques
-  div.row
-    div.col-md-4
-      
-    div.col-md-4
 
   div.row
     div.col-md-4
@@ -23,53 +19,58 @@ block content
               input(type="radio" name="filtered-view" value="real-part" checked="checked")
             label.radio-inline Mod
               input(type="radio" name="filtered-view" value="modulus-part")
-            h4 fond Original (spectre et image)
-            div#background-Slider
 
-          div.well Options
+          div.well#Filter 
+            h4 Filter
+            input(type="radio" name="filter" value="HPF" checked="checked")#HPF
+            label(for="HPF") Highpass
+            input(type="radio" name="filter" value="LPF")#LPF
+            label(for="LPF") LowPass
+            h4 Filter radius (spectre et image)
+            div#radius-Slider  
+
+          div.well 
+            h4 Options
             div.checkbox
               label Normaliser l'image filtree
                 input#normalize-filtered(type="checkbox" value="" checked="checked") 
             div.checkbox
               label Log dispay
                 input#view-type(type="checkbox" name="view" value="" checked="checked") 
-    div.col-md-4
-      h2 Fourier transform
-      canvas(width="256" height="256")#Spectrum
-    div.col-md-4
-      h2 Result
-      canvas(width="256" height="256")#Result
+            h4 Fond Original
+            div#background-Slider
 
 
 
-  div.row
-    div.col-md-4
-      div.panel.panel-default
-        div.panel-heading Filter type
-        div.panel-body#Filter
-          input(type="radio" name="filter" value="HPF" checked="checked")#HPF
-          label(for="HPF") Highpass
-          input(type="radio" name="filter" value="LPF")#LPF
-          label(for="LPF") LowPass
-    div.col-md-4
-      div.panel.panel-default
-        div.panel-heading Filter radius
-        div.panel-body
-          div#radius-Slider          
+    div.col-md-8
+      div.row        
+        div.col-md-6
+          div.panel.panel-default
+            div.panel-heading Fourier transform
+            div.panel-body
+              canvas(width="256" height="256")#Spectrum
+        div.col-md-6
+          div.panel.panel-default
+            div.panel-heading Result
+            div.panel-body
+              canvas(width="256" height="256")#Result
+
+      div.row
+        div.col-md-12
+          div.panel.panel-default
+            div.panel-heading Infos
+            div.panel-body
+              p TF position
+              ul.list-inline
+                li#xposition
+                li#yposition
+              p Image position
+              ul.list-inline
+                li#im-xposition
+                li#im-yposition
 
 
-    div.col-md-4
-      div.panel.panel-default
-        div.panel-heading Infos
-        div.panel-body
-          p TF position
-          ul.list-inline
-            li#xposition
-            li#yposition
-          p Image position
-          ul.list-inline
-            li#im-xposition
-            li#im-yposition
+
 
 
 //<script src="lib/js/fft.js"></script>

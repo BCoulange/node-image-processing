@@ -46,7 +46,9 @@ $ ->
         alert e
 
 
-      $('#Filter').change (e) ->  apply(e.target.value)
+      $('#Filter').change (e) ->  
+        last_filter = e.target.value
+        apply(e.target.value)
       $('#radius-Slider').slider
         change: (e, ui) -> apply last_filter, opts_last_filter
       $('#background-Slider').slider
